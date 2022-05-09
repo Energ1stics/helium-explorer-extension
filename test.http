@@ -1,0 +1,20 @@
+
+GET https://api.helium.io/v1/dc_burns/sum?min_time=-30%20day&bucket=day
+
+###
+
+GET https://api.helium.io/v1/dc_burns/sum?min_time=-1%20week
+
+###
+
+GET https://api.helium.io/v1/dc_burns/sum?min_time=-7%20day
+
+###
+
+GET https://api.helium.io/v1/dc_burns/sum?min_time=2022-04-09T00:00:00Z&max_time=2022-05-09T00:00:00Z
+
+###
+
+GET https://api.helium.io/v1/rewards/sum?min_time=2022-04-09T00:00:00Z&max_time=2022-05-09T00:00:00Z
+
+###
