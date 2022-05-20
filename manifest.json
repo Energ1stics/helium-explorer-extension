@@ -1,15 +1,15 @@
 {
-  "name": "Helium Token Sustainable Price",
-  "manifest_version": 3,
-  "version": "0.1",
-  "description": "Adds to the helium explorer a new graph which tracks the sustainable price of the helium network token (HNT)",
-  "icons": {
-    "128": "/images/green-token-128.png"
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://explorer.helium.com/"],
-      "js": ["src/myScript.js"]
-    }
-  ]
+    "name": "Helium Token Sustainable Price",
+    "manifest_version": 3,
+    "version": "0.1",
+    "description": "Adds to the helium explorer a new graph which tracks the sustainable price of the helium network token (HNT)",
+    "icons": {
+        "128": "/images/green-token-128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://explorer.helium.com/"],
+            "js": ["src/sustainablePrice.js"]
+        }
+    ]
 }
