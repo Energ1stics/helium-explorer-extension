@@ -2,7 +2,7 @@ const api_url = "https://api.helium.io/v1/";
 
 window.onload = () => {
     window.onload = () => {};
-    delay(3000).then(() => {
+    delay(3000).then(async () => {
         var containerElements = document.getElementsByClassName(
             "grid grid-flow-row relative overflow-y-scroll no-scrollbar grid-cols-2 gap-3 md:gap-4 pt-4 px-4 md:pt-8 md:px-8"
         );
@@ -22,32 +22,52 @@ window.onload = () => {
         grid.lastElementChild.removeAttribute("href");
         grid.lastElementChild.getElementsByTagName("span")[0].textContent =
             "Sustainable Price";
-        setFairValue(grid.lastElementChild.firstChild.childNodes[1], 30, 0);
+        await setFairValue(
+            grid.lastElementChild.firstChild.childNodes[1],
+            30,
+            0
+        );
+        await delay(3000);
         grid.lastElementChild.firstChild.childNodes[2].textContent =
-            getPriceDifference();
+            await getPriceDifference();
         grid.lastElementChild
             .getElementsByTagName("path")[0]
             .setAttribute("d", getGraphPoints());
     });
 };
 
+var currentFairValue;
+
 async function setFairValue(textObj, fromDays, toDays) {
     let minted = await mintedTokens(fromDays, toDays);
     let burned = await burnedTokens(fromDays, toDays);
 
-    textObj.innerHTML = "$" + (dcToUSD(burned) / minted).toFixed(3);
+    currentFairValue = calculateFairPrice(burned, minted);
+    textObj.innerHTML = "$" + currentFairValue;
 }
 
 function calculateFairPrice(fee, mintedToken) {
-    return dcToUSD(fee) / mintedToken;
+    return (dcToUSD(fee) / mintedToken).toFixed(3);
 }
 
 function dcToUSD(amount) {
     return amount * 0.00001;
 }
 
-function getPriceDifference() {
-    return "+$x.xx";
+async function getPriceDifference() {
+    console.log("getting price diff");
+    let minted = await mintedTokens(60, 30);
+    let burned = await burnedTokens(60, 30);
+
+    let pastPrice = calculateFairPrice(burned, minted);
+    let difference = currentFairValue - pastPrice;
+    var sign = "+";
+    if (difference < 0) {
+        sign = "-";
+        difference = difference * -1;
+    }
+
+    return sign + "$" + difference;
 }
 
 function getGraphPoints() {
@@ -85,5 +105,8 @@ async function mintedTokens(fromDays, toDays) {
 }
 
 function delay(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
+    return new Promise((resolve) => {
+        console.log("setting timeout");
+        setTimeout(resolve, time);
+    });
 }
