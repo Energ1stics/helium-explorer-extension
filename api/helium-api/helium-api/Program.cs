@@ -8,6 +8,7 @@ builder.Services.Configure<HeliumStatsDatabaseSettings>(
     builder.Configuration.GetSection("HeliumStatsDatabase"));
 
 builder.Services.AddSingleton<DailyStatsService>();
+builder.Services.AddSingleton<HeliumApiService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
