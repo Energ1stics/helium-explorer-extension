@@ -1,4 +1,4 @@
-using helium_api.Models;
+using HeliumApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HeliumApi.Test;

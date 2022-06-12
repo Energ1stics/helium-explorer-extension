@@ -1,10 +1,10 @@
-﻿using helium_api.Models.HeliumApi;
+﻿using HeliumApi.Models.Helium;
 using System.Net.Http.Headers;
-using helium_api.Models;
+using HeliumApi.Models;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
-namespace helium_api.Services;
+namespace HeliumApi.Services;
 
 public class HeliumApiService
 {

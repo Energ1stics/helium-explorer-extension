@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace helium_api.Models.HeliumApi;
+namespace HeliumApi.Models.Helium;
 
 public class DcBurns
 {

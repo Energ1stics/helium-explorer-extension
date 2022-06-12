@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-namespace helium_api.Models;
+namespace HeliumApi.Models;
 
 public class FixedDate
 {
@@ -21,7 +21,7 @@ public class FixedDate
         this.Year = year;
         this.Month = month;
         this.Day = day;
-        if(!DateOnly.TryParse(this.DateString, out _))
+        if (!DateOnly.TryParse(this.DateString, out _))
         {
             throw new ArgumentException("The given date is not valid.");
         }

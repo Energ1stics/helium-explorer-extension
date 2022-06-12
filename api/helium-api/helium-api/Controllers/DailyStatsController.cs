@@ -1,8 +1,8 @@
-using helium_api.Models;
-using helium_api.Services;
+using HeliumApi.Models;
+using HeliumApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace helium_api.Controllers;
+namespace HeliumApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

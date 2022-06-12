@@ -1,8 +1,8 @@
-﻿using helium_api.Models;
+﻿using HeliumApi.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace helium_api.Services;
+namespace HeliumApi.Services;
 
 public class DailyStatsService
 {
@@ -41,6 +41,16 @@ public class DailyStatsService
             }
         }
         return result;
+    }
+    
+    public async IAsyncEnumerable<DailyStats?> GetMultipleAsync(FixedDate from, FixedDate to)
+    {
+        yield return await GetAsync(from);
+        while(from != to)
+        {
+            from = from.NextDay();
+            yield return await GetAsync(from);
+        }
     }
 
     public async Task CreateAsync(DailyStats dailyStats)

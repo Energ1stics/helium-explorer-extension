@@ -1,4 +1,4 @@
-﻿namespace helium_api.Models;
+﻿namespace HeliumApi.Models;
 
 public class HeliumStatsDatabaseSettings
 {

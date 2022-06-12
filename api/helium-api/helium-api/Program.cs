@@ -1,5 +1,5 @@
-using helium_api.Models;
-using helium_api.Services;
+using HeliumApi.Models;
+using HeliumApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

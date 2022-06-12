@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "helium-api", "helium-api\helium-api.csproj", "{E22A8525-F03C-425F-ADDA-755D6753241A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeliumApi", "helium-api\HeliumApi.csproj", "{E22A8525-F03C-425F-ADDA-755D6753241A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeliumApi.Test", "HeliumApi.Test\HeliumApi.Test.csproj", "{5120B698-6620-45BF-9416-FD3A48BE18E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeliumApi.Test", "HeliumApi.Test\HeliumApi.Test.csproj", "{5120B698-6620-45BF-9416-FD3A48BE18E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

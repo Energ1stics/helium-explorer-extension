@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "helium_api": {
+    "HeliumApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

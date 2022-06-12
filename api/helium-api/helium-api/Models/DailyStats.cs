@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace helium_api.Models;
+namespace HeliumApi.Models;
 
 public class DailyStats
 {
