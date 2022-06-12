@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace helium_api.Models;
 
@@ -12,6 +13,7 @@ public class FixedDate
     public int Day { get; init; }
     #endregion
 
+    [JsonIgnore]
     public string DateString => $"{this.Year}/{this.Month}/{this.Day}";
 
     public FixedDate(int year, int month, int day)

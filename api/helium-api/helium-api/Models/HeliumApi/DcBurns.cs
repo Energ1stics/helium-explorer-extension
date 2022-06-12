@@ -7,6 +7,9 @@ public class DcBurns
     [JsonPropertyName("data")]
     public BurnData Data { get; set; }
 
+    [JsonIgnore]
+    public long Total => Data.State_Channel + Data.Routing + Data.Add_Gateway + Data.Assert_Location + Data.Fee;
+
     public DcBurns(BurnData data)
     {
         this.Data = data;

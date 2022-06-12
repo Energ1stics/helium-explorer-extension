@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace helium_api.Models;
 
@@ -11,11 +10,17 @@ public class DailyStats
 
     public long Dc_Burned { get; set; }
 
-    public long Hnt_Minted { get; set; }
+    public double Hnt_Minted { get; set; }
     #endregion
 
     public DailyStats(FixedDate date)
     {
         this.Date = date;
+    }
+
+    public DailyStats(FixedDate date, long dc_Burned, double hnt_Minted) : this(date)
+    {
+        this.Dc_Burned = dc_Burned;
+        this.Hnt_Minted = hnt_Minted;
     }
 }

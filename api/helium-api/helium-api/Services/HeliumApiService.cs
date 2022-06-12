@@ -1,7 +1,8 @@
 ﻿using helium_api.Models.HeliumApi;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using helium_api.Models;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace helium_api.Services;
 
@@ -11,20 +12,44 @@ public class HeliumApiService
 
     public HeliumApiService()
     {
-        this._client.BaseAddress = new Uri("https://api.helium.io/v1/dc_burns/");
+        this._client.BaseAddress = new Uri("https://api.helium.io/v1/");
         var userAgent = new ProductInfoHeaderValue("HeliumEquilibriumCalculator", "0.1");
         this._client.DefaultRequestHeaders.UserAgent.Add(userAgent);
     }
 
-    public async Task<DcBurns?> GetDcBurnsAsync(FixedDate date)
+    public async Task<DailyStats?> GetDailyStats(FixedDate date)
     {
-        DcBurns? result = null;
-        string url = $"sum?min_time={date.ToQueryString()}&max_time={date.NextDay().ToQueryString()}";
+        long? dcBurns = await GetDcBurnsAsync(date);
+        double? hntMinted = await GetMintedHntAsync(date);
+        if (hntMinted == null || dcBurns == null)
+        {
+            return null;
+        }
+        return new DailyStats(date, (long) dcBurns, (double) hntMinted);
+    }
+
+    public async Task<long?> GetDcBurnsAsync(FixedDate date)
+    {
+        long? result = null;
+        string url = $"dc_burns/sum?min_time={date.ToQueryString()}&max_time={date.NextDay().ToQueryString()}";
         var response = await this._client.GetAsync(url);
         if (response.IsSuccessStatusCode)
         {
             var dataStream = await response.Content.ReadAsStreamAsync();
-            result = JsonSerializer.Deserialize<DcBurns>(dataStream);
+            result = JsonSerializer.Deserialize<DcBurns>(dataStream)?.Total;
+        }
+        return result;
+    }
+
+    public async Task<double?> GetMintedHntAsync(FixedDate date)
+    {
+        double? result = null;
+        string url = $"rewards/sum?min_time={date.ToQueryString()}&max_time={date.NextDay().ToQueryString()}";
+        var response = await this._client.GetAsync(url);
+        if (response.IsSuccessStatusCode)
+        {
+            var data = await response.Content.ReadAsStringAsync();
+            result = (double?) JObject.Parse(data)["data"]?["total"];
         }
         return result;
     }
