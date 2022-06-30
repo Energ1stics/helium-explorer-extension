@@ -26,7 +26,7 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
 
     private async void ServiceIteration(object? state)
     {
-        Console.Clear();
+        if(!Console.IsOutputRedirected) Console.Clear();
         _logger.LogInformation("Update Service is iterating.");
 
         FixedDate date = FixedDate.Yesterday();

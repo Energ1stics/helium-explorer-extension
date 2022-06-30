@@ -18,6 +18,11 @@ builder.Services.AddSingleton<HeliumApiService>();
 builder.Services.AddHostedService<DailyStatsUpdateHostedService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(builder =>
+        builder.AllowAnyOrigin()));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
