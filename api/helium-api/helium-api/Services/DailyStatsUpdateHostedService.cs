@@ -19,7 +19,7 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
     {
         _logger.LogInformation("Update Service is running.");
 
-        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
+        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
         return Task.CompletedTask;
     }
