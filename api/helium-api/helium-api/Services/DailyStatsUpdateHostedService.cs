@@ -19,14 +19,14 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
     {
         _logger.LogInformation("Update Service is running.");
 
-        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
+        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
         return Task.CompletedTask;
     }
 
     private async void ServiceIteration(object? state)
     {
-        Console.Clear();
+        if(!Console.IsOutputRedirected) Console.Clear();
         _logger.LogInformation("Update Service is iterating.");
 
         FixedDate date = FixedDate.Yesterday();
