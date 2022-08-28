@@ -19,9 +19,6 @@ async function addMinValueElement() {
 
     if (!elementsContainer) return;
 
-    let currentMinValue = getEquilibrium(0);
-    let lastMonthMinValue = getEquilibrium(30);
-
     elementsContainer.insertBefore(
         elementsContainer.children[3].cloneNode(true),
         elementsContainer.childNodes[3]
@@ -31,12 +28,18 @@ async function addMinValueElement() {
     minValueElement.firstChild.firstChild.firstChild.textContent =
         "Equilibrium of HNT (30d)";
     minValueElement.firstChild.firstChild.lastChild.remove();
+    minValueElement.firstChild.childNodes[1].firstChild.firstChild.textContent =
+        "Loading...";
+    minValueElement.firstChild.childNodes[2].textContent = "Loading...";
+
+    let currentMinValue = getEquilibrium(0);
+    let lastMonthMinValue = getEquilibrium(30);
 
     currentMinValue = await currentMinValue;
 
-    minValueElement.getElementsByClassName(
-        "flex items-center m-0 p-0"
-    )[0].textContent = `$${currentMinValue / 100}`;
+    minValueElement.firstChild.childNodes[1].firstChild.firstChild.textContent = `$${
+        currentMinValue / 100
+    }`;
 
     lastMonthMinValue = await lastMonthMinValue;
 
