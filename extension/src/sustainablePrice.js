@@ -1,4 +1,4 @@
-const api_url = "https://localhost:7071/api/";
+const api_url = "https://helium-api-h6zi65bsjq-od.a.run.app/api/";
 
 window.onload = () => {
     addMinValueElement();
