@@ -9,11 +9,7 @@ builder.Logging.AddSimpleConsole(options =>
     options.TimestampFormat = "[hh:mm:ss]";
 });
 
-builder.Services.AddCors(options =>
-    options.AddDefaultPolicy(builder =>
-        builder.AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod()));
+builder.Services.AddCors();
 
 // Add services to the container.
 builder.Services.Configure<HeliumStatsDatabaseSettings>(
@@ -31,6 +27,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseCors(options =>
+    options.AllowAnyOrigin()
+           .AllowAnyHeader()
+           .AllowAnyMethod());
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -39,8 +40,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors();
 
 app.UseAuthorization();
 
