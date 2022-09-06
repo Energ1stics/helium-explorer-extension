@@ -1,9 +1,11 @@
 using HeliumApi.Models;
 using HeliumApi.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HeliumApi.Controllers;
 
+[EnableCors()]
 [ApiController]
 [Route("api/[controller]")]
 public class DailyStatsController : ControllerBase
