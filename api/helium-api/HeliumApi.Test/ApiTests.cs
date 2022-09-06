@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using FluentAssertions.Json;
 using System.Net;
 using Newtonsoft.Json.Linq;
 

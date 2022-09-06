@@ -1,4 +1,5 @@
 ﻿using HeliumApi.Models;
+using MongoDB.Driver;
 
 namespace HeliumApi.Services;
 
@@ -13,14 +14,14 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
     {
         _logger = logger;
         _dailyStatsService = dailyStatsService;
-        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+        _timer = new Timer(ServiceIteration, null, Timeout.InfiniteTimeSpan, TimeSpan.FromMinutes(5));
     }
 
     public Task StartAsync(CancellationToken token)
     {
         _logger.LogInformation("Update Service is running.");
 
-        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, Timeout.InfiniteTimeSpan);
 
         return Task.CompletedTask;
     }
@@ -41,7 +42,8 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
             if (date.Equals(lastDayToCheck))
             {
                 _logger.LogInformation("Last missing entry was pushed to DB. Pausing Service for this day.");
-                SetTimerToNextDay();
+                TimeSpan timeSpan = SetTimerToNextDay();
+                _logger.LogInformation("Service paused for " + ((int)timeSpan.TotalHours) + " hours");
                 return;
             }
             successful = await UpdateStats(date);
@@ -50,10 +52,11 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
         SetTimerToFiveMinutes();
     }
 
-    private void SetTimerToNextDay()
+    private TimeSpan SetTimerToNextDay()
     {
         TimeSpan timeToNextDay = DateTime.UtcNow.Date.AddDays(1) - DateTime.UtcNow;
-        this._timer.Change(TimeSpan.Zero, timeToNextDay);
+        this._timer.Change(Timeout.InfiniteTimeSpan, timeToNextDay);
+        return timeToNextDay;
     }
 
     private void SetTimerToFiveMinutes()
