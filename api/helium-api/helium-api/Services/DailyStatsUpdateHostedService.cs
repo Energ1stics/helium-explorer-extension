@@ -5,7 +5,7 @@ namespace HeliumApi.Services;
 public class DailyStatsUpdateHostedService : IHostedService, IDisposable
 {
     private readonly ILogger _logger;
-    private Timer? _timer = null;
+    private Timer _timer;
 
     private readonly DailyStatsService _dailyStatsService;
 
@@ -13,6 +13,7 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
     {
         _logger = logger;
         _dailyStatsService = dailyStatsService;
+        _timer = new Timer(ServiceIteration, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
     }
 
     public Task StartAsync(CancellationToken token)
@@ -27,6 +28,7 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
     private async void ServiceIteration(object? state)
     {
         if(!Console.IsOutputRedirected) Console.Clear();
+
         _logger.LogInformation("Update Service is iterating.");
 
         FixedDate date = FixedDate.Yesterday();
@@ -35,16 +37,28 @@ public class DailyStatsUpdateHostedService : IHostedService, IDisposable
         bool successful = await UpdateStats(date);
         while (successful)
         {
-            _logger.LogInformation("Data found. Continuing process.");
             date = date.PreviousDay();
             if (date.Equals(lastDayToCheck))
             {
-                _logger.LogInformation("Last missing entry was pushed to DB. Pausing Service for five minutes.");
+                _logger.LogInformation("Last missing entry was pushed to DB. Pausing Service for this day.");
+                SetTimerToNextDay();
                 return;
             }
             successful = await UpdateStats(date);
         }
         _logger.LogInformation("No data was found. Pausing Service for five minutes.");
+        SetTimerToFiveMinutes();
+    }
+
+    private void SetTimerToNextDay()
+    {
+        TimeSpan timeToNextDay = DateTime.UtcNow.Date.AddDays(1) - DateTime.UtcNow;
+        this._timer.Change(TimeSpan.Zero, timeToNextDay);
+    }
+
+    private void SetTimerToFiveMinutes()
+    {
+        this._timer.Change(TimeSpan.Zero, TimeSpan.FromMinutes(5));
     }
 
     private async Task<bool> UpdateStats(FixedDate date)
