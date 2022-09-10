@@ -1,5 +1,8 @@
 const api_url = "https://helium-api-h6zi65bsjq-od.a.run.app/api/";
 
+let currentMinValue = getEquilibrium(0);
+let lastMonthMinValue = getEquilibrium(30);
+
 window.onload = () => {
     addMinValueElement();
 };
@@ -31,9 +34,6 @@ async function addMinValueElement() {
     minValueElement.firstChild.childNodes[1].firstChild.firstChild.textContent =
         "Loading...";
     minValueElement.firstChild.childNodes[2].textContent = "Loading...";
-
-    let currentMinValue = getEquilibrium(0);
-    let lastMonthMinValue = getEquilibrium(30);
 
     currentMinValue = await currentMinValue;
 
@@ -68,10 +68,37 @@ async function getEquilibrium(minusDays) {
     const day = date.getUTCDate();
     const uri = `${api_url}DailyStats/${year}/${month}/${day}/30`;
 
-    let data = await fetch(uri)
-        .then((response) => response.json())
-        .then((data) => {
+    return getData(uri);
+}
+
+async function getData(uri) {
+    let tries = 0;
+    var maxTries = 30;
+
+    while (tries != maxTries) {
+        tries++;
+        let data = await fetch(uri)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 503) {
+                    return null;
+                } else {
+                    console.log(response.statusText);
+                }
+            })
+            .then((data) => {
+                return data;
+            })
+            .catch((error) => console.error(error));
+        if (data) {
             return data;
-        });
-    return data;
+        }
+        await sleep(1000);
+    }
+    console.log("No response from API");
+}
+
+function sleep(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
